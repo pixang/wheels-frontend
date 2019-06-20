@@ -1,0 +1,128 @@
+<div class="row wrapper border-bottom bg-gray-lighter page-heading">
+    <div class="col-lg-10">
+        <h2 class="second-header">当日过车定值查询分析</h2>
+    </div>
+    <div class="col-lg-2">
+    </div>
+</div>
+
+<div class="real-content wrapper wrapper-content animated fadeInRight">
+    <div class="row" ng-controller="DayDefiniteValueSearchController">
+        <div class="col-lg-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title main-dialog-box" style="padding-top: 30px;border-radius: 13px;">
+                    <div class="row">
+                        <form role="form" name="myForm">
+                            <div class="col-md-10 col-md-offset-1" ng-include src="'components/alert/alert.html'"></div>
+                            <div class="form-group col-md-3">
+                                <div layout="row" ng-cloak class="md-inline-form">
+                                    <mdp-date-picker required="" mdp-placeholder="行车时间" ng-disabled="formSearch.isLoading" ng-model="formSearch.startTime"></mdp-date-picker>
+                                </div>
+                            </div>
+                            <div class="form-group col-md-1">
+                                <md-input-container class="md-block" style="width: 60px;">
+                                    <label>齿高低于:</label>
+                                    <input required="" ng-disabled="formSearch.isLoading" name="toothHeight" ng-model="formSearch.toothHeight">
+                                    <div class="errors" ng-messages="myForm.toothHeight.$error">
+                                        <div ng-message="required">齿高数据不能为空</div>
+                                    </div>
+                                </md-input-container>
+                            </div>
+                            <div class="col-md-3" style="float: right;">
+                                <md-button class="md-raised" ng-click="search()" ng-disabled="formSearch.isLoading" style="margin-left: 10px;min-width: 70px;height: 20px;margin-top: 2px;">搜索</md-button>
+                                <md-button class="md-raised" ng-click="exportReportData()" ng-disabled="formSearch.isLoading || !formSearch.isLoaded" style="margin-left: 10px;min-width: 70px;height: 20px;margin-top: 2px;">报表</md-button>
+                            </div>
+                            <div class="col-md-4" style="float: right;">
+                                <md-input-container>
+                                    <label>齿号</label>
+                                    <md-select required="" ng-disabled="formSearch.isLoading" name="firstTooth" ng-model="formSearch.firstTooth">
+                                        <md-option ng-repeat="tooth in tooths" ng-value="tooth">
+                                            {{tooth}}
+                                        </md-option>
+                                    </md-select>
+                                    <div class="errors" ng-messages="myForm.firstTooth.$error">
+                                        <div ng-message="required">请选择</div>
+                                    </div>
+                                </md-input-container>
+                                <md-input-container>
+                                    <label>齿号</label>
+                                    <md-select required="" ng-disabled="formSearch.isLoading" name="secondTooth" ng-model="formSearch.secondTooth">
+                                        <md-option ng-repeat="tooth in tooths" ng-value="tooth">
+                                            {{tooth}}
+                                        </md-option>
+                                    </md-select>
+                                    <div class="errors" ng-messages="myForm.secondTooth.$error">
+                                        <div ng-message="required">请选择</div>
+                                    </div>
+                                </md-input-container>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="ibox-content main-dialog-box" style="margin-top: 20px;border-radius: 16px;background: rgb(255,255,255);padding: 0px 0px 0px 0px;">
+                    <div class="text-center" ng-show="formSearch.isLoading">
+                        <img src="assets/images/loading.gif" />
+                    </div>
+                    <div class="table-responsive" ng-show="formSearch.isLoaded && !formSearch.isLoading">
+                        <table class="footable table table-stripped toggle-arrow-tiny">
+                            <thead>
+                                <tr>
+                                    <th>时间</th>
+                                    <th>线路</th>
+                                    <th>列车号</th>
+                                    <th>站点</th>
+                                    <th>安装点</th>
+                                    <th>电机号</th>
+                                    <th>齿号</th>
+                                    <th>左数值</th>
+                                    <th>右数值</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="animate-repeat" ng-repeat="toothRecord in toothRecords">
+                                    <td>{{toothRecord.trainDate}}</td>
+                                    <td>4</td>
+                                    <td>{{toothRecord.trainId}}</td>
+                                    <td>{{station}}</td>
+                                    <td>{{toothRecord.trainDirection}}</td>
+                                    <td>{{toothRecord.motorNum}}</td>
+                                    <td>{{toothRecord.gearNum}}</td>
+                                    <td>{{toothRecord.lgapValue}}</td>
+                                    <td>{{toothRecord.rgapValue}}</td>
+                                </tr>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td>
+                                        <select class="pull-left custom-pagesize form-control" ng-change="onChange()" ng-model='pagination.pageSize' ng-options='pageSize.value as pageSize.name for pageSize in pageSizes'></select>
+                                    </td>
+                                    <td colspan="10">
+                                        <ul class="custom-pagination pull-right">
+                                            <li ng-class="{ disabled : pagination.current == 1 }">
+                                                <a href="" ng-click="setCurrent(1)">&laquo;</a>
+                                            </li>
+                                            <li ng-class="{ disabled : pagination.current == 1 }" class="ng-scope">
+                                                <a href="" ng-click="setCurrent(pagination.current - 1)" class="ng-binding">‹</a>
+                                            </li>
+                                            <li ng-repeat="pageNumber in pages track by $index" ng-class="{ active : pagination.current == pageNumber, disabled : pageNumber == '...' }">
+                                                <a href="" ng-click="setCurrent(pageNumber)">{{ pageNumber }}</a>
+                                            </li>
+
+                                            <li ng-class="{ disabled : pagination.current == pagination.totalPages }" class="ng-scope">
+                                                <a href="" ng-click="setCurrent(pagination.current + 1)" class="ng-binding">›</a>
+                                            </li>
+                                            <li ng-class="{ disabled : pagination.current == pagination.totalPages }">
+                                                <a href="" ng-click="setCurrent(pagination.totalPages)">&raquo;</a>
+                                            </li>
+                                        </ul>
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,219 @@
+<div ng-if="showReportSearch">
+    <div class="row wrapper border-bottom bg-gray-lighter page-heading">
+        <div class="col-lg-10">
+            <h2 class="second-header">行车报表</h2>
+        </div>
+        <div class="col-lg-2">
+        </div>
+    </div>
+    <div class="real-content wrapper wrapper-content animated fadeInRight">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="ibox float-e-margins">
+                    <form role="form" name="myForm">
+                        <div class="col-md-10 col-md-offset-1" ng-include src="'components/alert/alert.html'"></div>
+                    </form>
+
+                    <div class="ibox-content main-dialog-box" style="margin-top: 20px;border-radius: 16px;background: rgb(255,255,255);padding: 0px 0px 0px 0px;">
+                        <div class="text-center" ng-show="formSearch.isLoading">
+                            <img src="assets/images/loading.gif" />
+                        </div>
+                        <div class="table-responsive" ng-show="formSearch.isLoaded && !formSearch.isLoading">
+                            <table class="footable-driving-table footable table table-stripped toggle-arrow-tiny">
+                                <thead>
+                                    <tr>
+                                        <th>车号</th>
+                                        <th>轮径</th>
+                                        <th>轮缘厚</th>
+                                        <th>轮缘高</th>
+                                        <th>Q/R值</th>
+                                        <th>轴差</th>
+                                        <th>架差</th>
+                                        <th>车差</th>
+                                        <th>状态</th>
+                                        <th>时间</th>
+                                        <th>报表</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    <tr class="animate-repeat" ng-repeat="record in reportRecords">
+                                        <td>{{record.trainId}}</td>
+                                        <td ng-class="{ redState : record.lunjingState == 2,
+                                                         orangeState : record.lunjingState ==1}">{{record.lunjing}}</td>
+                                        <td ng-class="{ redState : record.lunhouState == 2,
+                                                         orangeState : record.lunhouState ==1}">{{record.lunhou}}</td>
+                                        <td ng-class="{ redState : record.lungaoState == 2,
+                                                         orangeState : record.lungaoState ==1}">{{record.lungao}}</td>
+                                        <td ng-class="{ redState : record.qrValueState == 2,
+                                                         orangeState : record.qrValueState ==1}">{{record.qrValue}}</td>
+                                        <td ng-class="{ redState : record.zhouchaState == 2,
+                                                         orangeState : record.zhouchaState ==1}">{{record.zhoucha}}</td>
+                                        <td ng-class="{ redState : record.jiachaState == 2,
+                                                         orangeState : record.jiachaState ==1}">{{record.jiacha}}</td>
+                                        <td ng-class="{ redState : record.chechaState == 2,
+                                                         orangeState : record.chechaState ==1}">{{record.checha}}</td>
+                                        <td>{{record.trainState}}</td>
+                                        <td>{{record.trainDate}}</td>
+                                        <td>
+                                            <a class="fa fa-table" aria-hidden="true" ng-click="confirm(record.trainOnlyId,record.trainId,record.trainDate,record.trainState)"></a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <td>
+                                            <select class="pull-left custom-pagesize form-control" ng-change="onChange()" ng-model='pagination.pageSize' ng-options='pageSize.value as pageSize.name for pageSize in pageSizes'></select>
+                                        </td>
+                                        <td colspan="13">
+                                            <ul class="custom-pagination pull-right">
+                                                <li ng-class="{ disabled : pagination.current == 1 }">
+                                                    <a href="" ng-click="setCurrent(1)">&laquo;</a>
+                                                </li>
+                                                <li ng-class="{ disabled : pagination.current == 1 }" class="ng-scope">
+                                                    <a href="" ng-click="setCurrent(pagination.current - 1)" class="ng-binding">‹</a>
+                                                </li>
+                                                <li ng-repeat="pageNumber in pages track by $index" ng-class="{ active : pagination.current == pageNumber, disabled : pageNumber == '...' }">
+                                                    <a href="" ng-click="setCurrent(pageNumber)">{{ pageNumber }}</a>
+                                                </li>
+
+                                                <li ng-class="{ disabled : pagination.current == pagination.totalPages }" class="ng-scope">
+                                                    <a href="" ng-click="setCurrent(pagination.current + 1)" class="ng-binding">›</a>
+                                                </li>
+                                                <li ng-class="{ disabled : pagination.current == pagination.totalPages }">
+                                                    <a href="" ng-click="setCurrent(pagination.totalPages)">&raquo;</a>
+                                                </li>
+                                            </ul>
+                                        </td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div ng-if="!hideDetailMotorData">
+    <div class="row wrapper border-bottom bg-gray-lighter page-heading">
+        <div class="col-lg-10">
+            <h2 class="second-header">数据详情</h2>
+        </div>
+        <div class="col-lg-2">
+        </div>
+    </div>
+
+    <div class="real-content wrapper wrapper-content animated fadeInRight">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="ibox float-e-margins">
+                    <div class="row">
+                        <div class="col-md-10 col-md-offset-1" ng-include src="'components/alert/alert.html'"></div>
+
+                        <div class="col-md-12" style="
+                                                    padding-left:  18px;
+                                                    padding-right: 18px;"
+                             ng-show="formSearch.isLoaded && !formSearch.isLoading">
+
+                            <div class="col-md-2 md-item-text main-dialog-children md-whiteframe-z1" flex>
+                                <p class="main-dialog-title">线路：</p>
+                                <h3 class="main-dialog-title-value">{{line}}</h3>
+                            </div>
+                            <div class="col-md-2 md-item-text main-dialog-children md-whiteframe-z1" flex>
+                                <p class="main-dialog-title">车号：</p>
+                                <h3 class="main-dialog-title-value">{{trainId}}</h3>
+                            </div>
+
+                            <div class="col-md-2 md-item-text md-whiteframe-z1 main-dialog-children" flex>
+                                <p class="main-dialog-title">站点：</p>
+                                <h3 class="main-dialog-title-value">{{station}}</h3>
+                            </div>
+
+                            <div class="col-md-2 md-item-text main-dialog-children md-whiteframe-z1" flex>
+                                <p class="main-dialog-title">状态：</p>
+                                <h3 class="main-dialog-title-value">{{trainState}}</h3>
+                            </div>
+                            <div class="col-md-4 md-item-text main-dialog-children md-whiteframe-z1" flex>
+                                <p class="main-dialog-title">行车时间：</p>
+                                <h3 class="main-dialog-title-value">{{trainDate}}</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ibox-content main-dialog-box"
+                         style="margin-top: 20px;border-radius: 16px;background: rgb(255,255,255);padding: 0px 0px 0px 0px;">
+
+                        <div class="text-center" ng-show="formSearch.isLoading">
+                            <img src="assets/images/loading.gif"/>
+                        </div>
+
+                        <div ng-show="formSearch.isLoaded && !formSearch.isLoading">
+                            <table class="footable-wheel-table footable table table-stripped toggle-arrow-tiny">
+                                <thead>
+                                <tr>
+                                    <th data-sort-ignore="true">车厢号</th>
+                                    <th data-sort-ignore="true" style="border-left: 1px solid #e7eaec;">轮号</th>
+                                    <th data-sort-ignore="true" style="border-left: 1px solid #e7eaec;">轮径</th>
+                                    <th data-sort-ignore="true" style="border-left: 1px solid #e7eaec;">轮缘厚</th>
+                                    <th data-sort-ignore="true" style="border-left: 1px solid #e7eaec;">轮缘高</th>
+                                    <th data-sort-ignore="true" style="border-left: 1px solid #e7eaec;">Q/R值</th>
+                                    <th data-sort-ignore="true" style="border-left: 1px solid #e7eaec;">内侧距</th>
+                                    <th data-sort-ignore="true" style="border-left: 1px solid #e7eaec;">轴差</th>
+                                    <th data-sort-ignore="true" style="border-left: 1px solid #e7eaec;">架差</th>
+                                    <th data-sort-ignore="true" style="border-left: 1px solid #e7eaec;">车差</th>
+                                </tr>
+                                </thead>
+                                <tbody style="border-bottom: 1px solid #e7eaec;" ng-repeat="records in detailVibrateRecords">
+                                <tr class="animate-repeat" ng-repeat="record in records">
+                                    <td style="border-left: 1px solid #e7eaec;">{{record.carriageNum}}</td>
+                                    <td style="border-left: 1px solid #e7eaec;">{{record.wheelNum}}</td>
+                                    <td style="border-left: 1px solid #e7eaec;"
+                                        ng-class="{ redState : record.lunjingState == 2,
+                                                     orangeState : record.lunjingState ==1}">{{record.lunjing}}</td>
+                                    <td style="border-left: 1px solid #e7eaec;"
+                                        ng-class="{ redState : record.lunhouState == 2,
+                                                     orangeState : record.lunhouState ==1}">{{record.lunhou}}</td>
+                                    <td style="border-left: 1px solid #e7eaec;"
+                                        ng-class="{ redState : record.lungaoState == 2,
+                                                     orangeState : record.lungaoState ==1}">{{record.lungao}}</td>
+                                    <td style="border-left: 1px solid #e7eaec;"
+                                        ng-class="{ redState : record.qrValueState == 2,
+                                                     orangeState : record.qrValueState ==1}">{{record.qrValue}}</td>
+                                    <td style="vertical-align: middle;
+                                                      border-left: 1px solid #e7eaec;"
+                                        rowspan="2" ng-show="$index % 2 == 0">{{record.neicejuValue}}</td>
+                                    <td style="vertical-align: middle;
+                                                      border-left: 1px solid #e7eaec;"
+                                        rowspan="2" ng-show="$index % 2 == 0" ng-class="{ redState : record.zhouchaState == 2,
+                                                     orangeState : record.zhouchaState ==1}">{{record.zhoucha}}</td>
+                                    <td style="vertical-align: middle;
+                                                      border-left: 1px solid #e7eaec;"
+                                        rowspan="4" ng-show="$index % 4 == 0" ng-class="{ redState : record.jiachaState == 2,
+                                                     orangeState : record.jiachaState ==1}">{{record.jiacha}}</td>
+                                    <td style="vertical-align: middle;
+                                                      border-left: 1px solid #e7eaec;"
+                                        rowspan="8" ng-show="$index % 8 == 0" ng-class="{ redState : record.chechaState == 2,
+                                                     orangeState : record.chechaState ==1}">{{record.checha}}</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="layout-row configuration-footer" style="margin: auto;width: 237px;">
+                            <md-button class="md-raised" ng-click="backFromDetailMotorPage()"
+                                       ng-disabed="formSearch.isLoading">
+                                返回
+                            </md-button>
+                            <md-button class="md-raised md-primary" ng-click="exportRecords()"
+                                       ng-disabed="formSearch.isLoading">
+                                保存
+                            </md-button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

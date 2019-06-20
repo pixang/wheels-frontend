@@ -1,0 +1,66 @@
+<div class="header-navbar-fixed row">
+    <nav class="navbar navbar-static-top white-bg" role="navigation" style="margin-bottom: 0;height: 61px;">
+        <div class="navbar-header">
+            <a href="#menu-toggle" ng-click="resizeForToggle()" class="navbar-minimalize minimalize-styl-2 btn btn-primary " id="menu-toggle"><i class="fa fa-bars"></i></a>
+  
+        </div>
+        <div class="btn-group" style="float: right;margin-right: 30px;">
+                <button class="navbar-minimalize minimalize-styl-2 btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                    <img class="img-avatar" src="../../assets/images/default_family1.png" style="height: 25px;padding-right: 10px;" alt="">
+                    <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-right" style="left: auto;">
+                    <li class="dropdown-header">欢迎，<font color="#333333">{{currentUser.username}}&nbsp; </font></li>
+
+                    <li class="divider"></li>
+                
+                    <li>
+                        <a tabindex="-1" ng-click="changePassword()">
+                            <i class="fa fa-key pull-right" aria-hidden="true" style="padding-top: 8px;"></i> 修改密码
+                        </a>
+                    </li>
+
+                    <li class="divider"></li>
+                    <li>
+                        <a tabindex="-1" style="padding-top: 8px;" ng-click="logout()">
+                            <i class="fa fa-sign-out pull-right" aria-hidden="true" style="padding-top: 8px;"></i>退出账户
+                        </a>
+                    </li>
+                </ul>
+        </div>
+      
+    </nav>
+</div>
+
+<script>
+    $("#menu-toggle").click(function(e) {
+        e.preventDefault();
+        $("#wrapper").toggleClass("toggled");
+
+        var neiceju = $("#neiceju"),
+            zhoucha = $('#zhoucha'),
+            jiacha = $('#jiacha'),
+            checha = $('#checha');
+
+        if (neiceju.length > 0) {
+            setTimeout(function () {
+                neiceju.highcharts().reflow();
+            },600);
+        }
+        if (zhoucha.length > 0) {
+            setTimeout(function () {
+                zhoucha.highcharts().reflow();
+            },600);
+        }
+        if (jiacha.length > 0) {
+            setTimeout(function () {
+                jiacha.highcharts().reflow();
+            },600);
+        }
+        if (checha.length > 0) {
+            setTimeout(function () {
+                checha.highcharts().reflow();
+            },600);
+        }
+    })
+</script>
