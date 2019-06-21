@@ -123,7 +123,6 @@ module.controller('MainController', [
                                 var trainOnlyId = trainInfo[0].trainOnlyid;
                                 var trainId = prop;
 
-
                                 if (currentState == 1) {
                                     $scope.playDeviceAudio();
 
@@ -172,18 +171,6 @@ module.controller('MainController', [
             }
         };
 
-        var navbarHeight = {
-            navbarHeigh: "10000",
-            setNavbarHeight: function (height) {
-                // if(this.navbarHeigh > height){
-                this.navbarHeigh = height;
-                // }
-            },
-            getNavbarHeight: function () {
-                return this.navbarHeigh;
-            }
-        };
-
         $scope.$on("UserChange",
             function (event, user) {
                 if (user === "logout") {
@@ -219,7 +206,6 @@ module.controller('MainController', [
             });
 
         $scope.$on("ResizePage", function (event) {
-
             if ($location.url() == '/index/main') {
                 $timeout(function () {
                     fix_mainpage_height();
@@ -340,7 +326,6 @@ module.controller('MainController', [
         };
 
         angular.element(document).ready(function () {
-
             $(window).bind("resize scroll", function () {
                 $rootScope.$broadcast('ResizePage');
             });
