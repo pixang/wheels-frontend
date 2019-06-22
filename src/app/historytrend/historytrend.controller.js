@@ -68,7 +68,7 @@ module.controller("HistoryTrendController", ['$scope', '$state', '$rootScope', '
         $scope.formSearch = {
             startTime: new Date(),
             endTime: new Date(new Date().getTime() + 24 * 60 * 60 * 1000),
-            trainId: null,
+            trainId: '001002',
 
             carriageNum: null,
             wheelNum: null,
@@ -191,7 +191,6 @@ module.controller("HistoryTrendController", ['$scope', '$state', '$rootScope', '
                     $scope.formSearch.setLoading(false);
                 },
                 function (err) {
-                    $alert.error("服务器出错", $scope);
                     $scope.formSearch.setLoading(false);
                 }
             )

@@ -93,9 +93,6 @@ module.controller('MainController', [
                                 $scope.openWarningDialog(warningInfo);
                             }
                         }
-                    },
-                    function (err) {
-                        $alert.error(err.error, $scope);
                     }
                 )
             } else {
@@ -139,9 +136,6 @@ module.controller('MainController', [
                         objectForTrainsInfo.trainsInfo = $scope.trainsInfo;
                         localStorage.setItem("trainsInfoVibrate", JSON.stringify(objectForTrainsInfo));
                         sessionStorage.setItem('isRunning', "Y");
-                    },
-                    function (err) {
-                        $alert.error(err.error, $scope);
                     }
                 )
             }
@@ -326,6 +320,10 @@ module.controller('MainController', [
         };
 
         angular.element(document).ready(function () {
+            if ($location.url() === '/index/main') {
+                $rootScope.$broadcast("ShowDashboard");
+            }
+
             $(window).bind("resize scroll", function () {
                 $rootScope.$broadcast('ResizePage');
             });
@@ -677,7 +675,6 @@ module.controller('PasswordChangeController', [
                 },
                 function (err) {
                     $timeout(function () {
-                        $alert.error(err.error, $scope);
                         $scope.exception = true;
                         $scope.form.setLoading(false);
                     }, 1000);

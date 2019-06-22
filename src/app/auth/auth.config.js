@@ -2,7 +2,7 @@ angular.module('supportAdminApp')
     .config(function($httpProvider){
     
     //  $httpProvider.defaults.withCredentials = true;
-     $httpProvider.interceptors.push(['$q', '$location', '$cookies', 'AuthService',function($q, $location,$cookies,authService) {
+     $httpProvider.interceptors.push(['$q', '$location', '$cookies', 'AuthService','Alert', function($q, $location,$cookies,authService, $alert) {
         return {
             'request': function (config) {
                 config.headers = config.headers || {};
@@ -13,13 +13,20 @@ angular.module('supportAdminApp')
                 return config;
             },
             'responseError': function(response) {
+                console.log("interceptor:  "  + JSON.stringify(response));
+
                 if (response.status == -1){
-                    authService.toPagelogin("lose connect");
-                    return
+                    $alert.clear();
+                    $alert.warning("与服务器失去连接。");
+                    return $q.reject({ error: "lose connection!" });
                 }else if(response.status == 403){
                     authService.toPagelogin("token timeout");
+                }else {
+                    $alert.clear();
+                    var msg = "status: " + response.status + ",error: " + response.data.error;
+                    $alert.error(msg);
+                    return $q.reject({ error: response.error });
                 }
-                // return $q.reject(response);
             }
         };
     }]);

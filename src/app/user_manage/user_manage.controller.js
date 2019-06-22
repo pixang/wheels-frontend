@@ -34,7 +34,6 @@ module.controller("UserMangae", ['$scope', '$state', '$rootScope', '$timeout', '
 
         $scope.search = function () {
             $alert.clear();
-            var err = [];
 
             $scope.formSearch.setLoading(true);
             userManageService.retrieveUser().then(
@@ -49,7 +48,6 @@ module.controller("UserMangae", ['$scope', '$state', '$rootScope', '$timeout', '
                     $scope.formSearch.setLoading(false);
                 },
                 function (err) {
-                    $alert.error(err);
                     $scope.formSearch.setLoading(false);
                 }
             )
@@ -117,7 +115,7 @@ module.controller('UserEditDialogController', [
                 $scope.form.setLoading(true);
                 userManageService.saveUser(userForSave).then(
                     function (data) {
-                        if (data == "更新成功") {
+                        if (data === "更新成功") {
                             user.userrole = parseInt($scope.form.userrole);
                             user.userstate = parseInt($scope.form.userstate);
                             $scope.form.setLoading(false);
@@ -131,7 +129,6 @@ module.controller('UserEditDialogController', [
                         }
                     },
                     function (err) {
-                        $alert.error("服务器发生错误", $scope);
                         $scope.form.setLoading(false);
                     }
                 );

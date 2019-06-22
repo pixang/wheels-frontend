@@ -54,7 +54,7 @@ module.controller("DayDefiniteValueSearchController", ['$scope', '$state', '$roo
                 m = date.getMinutes() < 10 ? '0' + (date.getMinutes()) : '' + (date.getMinutes()),
                 s = date.getSeconds() < 10 ? '0' + (date.getSeconds()) : '' + (date.getSeconds());
             return Y + M + D + h + m + s;
-        }
+        };
 
         $scope.search = function () {
             $alert.clear();
@@ -66,11 +66,11 @@ module.controller("DayDefiniteValueSearchController", ['$scope', '$state', '$roo
                 err.push("行车时间不能为空");
             }
 
-            if ($scope.formSearch.toothHeight == "" || $scope.formSearch.firstTooth == "" || $scope.formSearch.secondTooth == "") {
+            if ($scope.formSearch.toothHeight === "" || $scope.formSearch.firstTooth === "" || $scope.formSearch.secondTooth === "") {
                 err.push("查询条件有误，请检查");
             }
             if (err.length > 0) {
-                $alert.error(err.join('! '))
+                $alert.error(err.join('! '));
                 return
             }
 
@@ -93,9 +93,10 @@ module.controller("DayDefiniteValueSearchController", ['$scope', '$state', '$roo
                     $scope.$broadcast('ToothTableDataUpdated');
                 },
                 function (err) {
+                    $scope.formSearch.setLoading(false);
                 }
             )
-        }
+        };
 
         $scope.toothRecords = [];
 
@@ -118,8 +119,8 @@ module.controller("DayDefiniteValueSearchController", ['$scope', '$state', '$roo
                 style: 'display:none',
                 href: 'data:application/octet-stream;base64,' + btoa(unescape(encodeURIComponent(csvString))),
                 download: "当日过车定值查询分析表.csv"
-            }).appendTo('body')
-            a[0].click()
+            }).appendTo('body');
+            a[0].click();
             a.remove();
         };
 
@@ -129,7 +130,7 @@ module.controller("DayDefiniteValueSearchController", ['$scope', '$state', '$roo
             pageSize: $scope.pageSizes[1].value,
         }
         $scope.setCurrent = function (num) {
-            if (num === '...' || num == $scope.pagination.current || num == 0 || num == ($scope.pagination.totalPages + 1)) {
+            if (num === '...' || num === $scope.pagination.current || num === 0 || num === ($scope.pagination.totalPages + 1)) {
                 return
             }
             $scope.pagination.current = num;

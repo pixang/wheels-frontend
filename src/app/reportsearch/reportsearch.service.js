@@ -10,9 +10,7 @@ angular.module('supportAdminApp')
             var ReportSearchService = {};
 
             ReportSearchService.retrieveRecord = function (searchCondition) {
-
                 var payload = JSON.stringify(searchCondition);
-                console.log("payload :   " + payload);
 
                 var request = $http({
                     method: 'POST',
@@ -24,9 +22,7 @@ angular.module('supportAdminApp')
                 });
                 return request.then(
                     function (response) {
-                        var data = JSON.stringify(response);
-                        console.log("ReportSearchService:   " + data);
-                        if (response.data.code == 0) {
+                        if (response.data.code === 0) {
                             return ReportSearchService.createRecord(response.data.data);
                         }
                         else {
@@ -34,9 +30,6 @@ angular.module('supportAdminApp')
                         }
                     },
                     function (error) {
-
-
-                        console.log(error);
                         return $q.reject({error: error});
                     }
                 );

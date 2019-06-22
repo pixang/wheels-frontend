@@ -54,6 +54,7 @@
 
                                         <div style="width: 125px;padding-left: 4px;">
                                             <md-autocomplete  flex="" required="" ng-model="formSearch.trainId"
+                                                              ng-disabled="formSearch.isLoading"
                                                              md-input-name="autocompleteTrainId" md-min-length="0"
                                                              md-selected-item="selectedTrainId"
                                                              md-selected-item-change="selectedTrainIdChange(trainId)"

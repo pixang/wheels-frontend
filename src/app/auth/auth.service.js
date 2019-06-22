@@ -26,7 +26,7 @@ angular.module('supportAdminApp')
                 return true;
             }
             return false;
-        }
+        };
 
         authService.signin = function(userInfo) {
             var payload = JSON.stringify(userInfo);
@@ -42,10 +42,7 @@ angular.module('supportAdminApp')
             });
             return request.then(
                 function(response) {
-                  if(!response){
-                    return response
-                  }
-                  if(response.data.code == 0){
+                  if(response.data.code === 0){
                     return response.data.data;
                   }
                   else{
@@ -70,11 +67,8 @@ angular.module('supportAdminApp')
                  data: payload
             });
             return request.then(
-                function(response) {                  
-                  if(!response){
-                      return response
-                  }
-                  if(response.data.code == 0){
+                function(response) {
+                  if(response.data.code === 0){
                     return true;
                   }
                   else{
@@ -99,21 +93,14 @@ angular.module('supportAdminApp')
             });
             return request.then(
                 function(response) {
-                  var data = JSON.stringify(response);
-                  
-                  if(response.data.code == 0){
                     $cookies.remove('token');
                     $cookies.remove('currentUser');
                     $cookies.remove('currentUserRole');
                     $cookies.remove('currentUserState');
+                  if(response.data.code === 0){
                     $rootScope.$broadcast('UserChange',"logout");
                     return true;
-                  }
-                  else{
-                      $cookies.remove('token');
-                      $cookies.remove('currentUser');
-                      $cookies.remove('currentUserRole');
-                      $cookies.remove('currentUserState');
+                  } else{
                     return response.data.msg;
                   }
                 }

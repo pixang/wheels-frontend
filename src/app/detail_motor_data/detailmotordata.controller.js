@@ -101,6 +101,7 @@ module.controller('DetailMotorDataController', [
                     $scope.$broadcast('DetailMotorDataUpdated');
                 },
                 function (err) {
+                    $scope.formSearch.setLoading(false);
                 }
             );
         };

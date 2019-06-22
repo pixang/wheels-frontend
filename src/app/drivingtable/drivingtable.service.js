@@ -19,7 +19,7 @@ angular.module('supportAdminApp')
                 });
                 return request.then(
                     function (response) {
-                        if (response.data.code == 0) {
+                        if (response.data.code === 0) {
                             return DrivingTableService.createRecord(response.data.data);
                         }
                         else {

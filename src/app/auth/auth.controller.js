@@ -42,10 +42,6 @@ angular.module('supportAdminApp')
             $scope.form.setLoading(true);
             authService.signin(userInfo).then(
                 function(res) {
-                    if(!res){
-                        $scope.form.setLoading(false);
-                        return
-                    }
                     if ( typeof(res) == "string") {
                         $alert.error(res);    
                     }
@@ -81,7 +77,7 @@ angular.module('supportAdminApp')
         };
 
         $scope.signup = function() {
-            $alert.clear()
+            $alert.clear();
             var userInfo = {};
 
             if( $scope.formForRegister.name && $scope.formForRegister.username && $scope.formForRegister.password1 && $scope.formForRegister.password2 ){
@@ -101,12 +97,6 @@ angular.module('supportAdminApp')
             $scope.formForRegister.setLoading(true);
             authService.signup(userInfo).then(
                 function(res) {
-                    
-                    if(!res){
-                        $alert.error("异常，未注册成功。");
-                        $scope.formForRegister.setLoading(false);
-                        return
-                    }
                     if (typeof(res) == "string") {
                         $alert.error(res);    
                     } else {
@@ -117,7 +107,7 @@ angular.module('supportAdminApp')
                 }, 
                 function(err) {
                     $scope.formForRegister.setLoading(false);
-                    
+                    $alert.clear();
                     $alert.error("异常，未注册成功。");
                 }
             )
