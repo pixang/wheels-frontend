@@ -32,7 +32,7 @@ angular.module('supportAdminApp', [
                     $location.path('/auth');
                     $timeout(function () {
                         $rootScope.$broadcast("ResizeAuthPage", "fromlocation");
-                    }, 100);
+                    }, 500);
                 } else if ($location.path() == '/index/main') {
                     $rootScope.$broadcast("ShowDashboard", "login state failed");
                 }

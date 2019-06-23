@@ -7,9 +7,6 @@ module.controller("ReportSearchController", ['$scope', '$state', '$rootScope', '
         $scope.$on('ReportDataUpdated', function (event) {
             $('.footable-report-search').footable({ paginate: false });
             $('.footable-report-search').trigger('footable_redraw');
-            $timeout(function () {
-                $rootScope.$broadcast('ResizePage');
-            }, 800);
         });
 
         $scope.selectedItem = null;
@@ -295,7 +292,6 @@ module.controller("ReportSearchController", ['$scope', '$state', '$rootScope', '
         angular.element(document).ready(function () {
             $rootScope.$broadcast("HideDashboard");
             $('.footable').footable({ paginate: false });
-            $rootScope.$broadcast('ResizePage');
         });
     }]);
 

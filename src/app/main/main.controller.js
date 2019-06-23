@@ -93,6 +93,15 @@ module.controller('MainController', [
                                 $scope.openWarningDialog(warningInfo);
                             }
                         }
+                    },
+                    function(err){
+                        $alert.error('请求最新过车数据失败，将清空缓存，加载全局数据');
+                        initTrainsInfo();
+                        sessionStorage.removeItem('isRunning');
+                        localStorage.removeItem("trainsInfo");
+                        $timeout(function(){
+                            $scope.getTrainInfo();
+                        },200)
                     }
                 )
             } else {
@@ -130,7 +139,6 @@ module.controller('MainController', [
                                 }
                             }
                         }
-
                         $scope.trainsInfo.sort(compare);
 
                         objectForTrainsInfo.trainsInfo = $scope.trainsInfo;
@@ -176,7 +184,6 @@ module.controller('MainController', [
                     $scope.currentUser.username = $cookies.get('currentUser');
                     $scope.currentUser.userrole = $cookies.get('currentUserRole');
                 }, 300);
-
             });
 
         $scope.$on("HideDashboard",
@@ -193,29 +200,7 @@ module.controller('MainController', [
                     $scope.currentUser.username = $cookies.get('currentUser');
                     $scope.currentUser.userrole = parseInt($cookies.get('currentUserRole'));
                 }
-
-                $timeout(function () {
-                    fix_mainpage_height();
-                }, 300);
             });
-
-        $scope.$on("ResizePage", function (event) {
-            if ($location.url() == '/index/main') {
-                $timeout(function () {
-                    fix_mainpage_height();
-                }, 500);
-                return
-            }
-            if ($location.url() == '/auth') {
-                $timeout(function () {
-                    fix_auth_height();
-                }, 0);
-                return
-            }
-            $timeout(function () {
-                fix_height()
-            }, 500);
-        });
 
         $scope.$on("ResizeAuthPage", function (event, msg) {
             if (msg == "fromlocation") {
@@ -234,16 +219,12 @@ module.controller('MainController', [
                 $alert.clear();
                 $alert.info('登陆状态失效，请重新登陆', $rootScope);
             }
-
-            $timeout(function () {
-                fix_auth_height()
-            }, 100);
         });
 
 
         // call from side-nav
         $scope.toMainPage = function () {
-            $rootScope.$broadcast("ShowDashboard", "wusuowei");
+            $rootScope.$broadcast("ShowDashboard");
             $state.go('index.main');
         };
 
@@ -285,7 +266,6 @@ module.controller('MainController', [
             });
         };
         $scope.playDeviceAudio = function () {
-
             var a = $('<audio/>', {
                 style: 'display:none',
                 autoplay: 'autoplay',
@@ -303,9 +283,6 @@ module.controller('MainController', [
             }
         };
 
-        $scope.resizeForToggle = function () {
-            $rootScope.$broadcast('ResizePage');
-        };
         $scope.changePassword = function () {
             var modalInstance = $modal.open({
                 size: 'md',
@@ -324,10 +301,6 @@ module.controller('MainController', [
                 $rootScope.$broadcast("ShowDashboard");
             }
 
-            $(window).bind("resize scroll", function () {
-                $rootScope.$broadcast('ResizePage');
-            });
-
             if ($cookies.get('currentUser')) {
                 $scope.getTrainInfo();
                 $scope.currentUser.username = $cookies.get('currentUser');
@@ -335,9 +308,6 @@ module.controller('MainController', [
             }
 
             $interval(function () {
-                if (!$cookies.get('currentUser')) {
-                    return
-                }
                 var date = new Date();
                 var h = date.getHours() < 10 ? '0' + (date.getHours()) : '' + (date.getHours());
                 var m = date.getMinutes() < 10 ? '0' + (date.getMinutes()) : '' + (date.getMinutes());
@@ -351,52 +321,7 @@ module.controller('MainController', [
                 }
                 $scope.getTrainInfo();
             }, 60 * 1000);
-
-            if ($location.url() == '/index/main') {
-                $rootScope.$broadcast("ShowDashboard", "");
-            }
-            $rootScope.$broadcast('ResizePage');
         });
-
-        function fix_height() {
-            var windowHeigh = $(window).height();
-            var extraHeight = 162;
-            var realcontentHeigh = $(".real-content").height() + $(".second-header").height() + extraHeight;
-            if (realcontentHeigh > windowHeigh) {
-                $('body').css("height", realcontentHeigh + "px");
-                $('#page-wrapper').css("height", realcontentHeigh + "px");
-                $('#sidebar-wrapper').css("height", realcontentHeigh + "px");
-            } else {
-                $('#page-wrapper').css("height", windowHeigh + "px");
-                $('body').css("height", windowHeigh + "px");
-                $('#sidebar-wrapper').css("height", windowHeigh + "px");
-            }
-            if ($('body').hasClass('fixed-nav')) {
-                $('#page-wrapper').css("height", $(window).height() - 60 + "px");
-            }
-        }
-
-        function fix_mainpage_height() {
-            var windowHeigh = $(window).height();
-            var realcontentHeigh = $const.TRAIN_ID.length * 47 + $(".main-page-tips").height() + 260;
-            if (realcontentHeigh > windowHeigh) {
-                $('body').css("height", realcontentHeigh + "px");
-                $('#page-wrapper').css("height", realcontentHeigh + "px");
-                $('#sidebar-wrapper').css("height", realcontentHeigh + "px");
-            } else {
-                $('#page-wrapper').css("height", windowHeigh + "px");
-                $('body').css("height", windowHeigh + "px");
-                $('#sidebar-wrapper').css("height", windowHeigh + "px");
-            }
-            if ($('body').hasClass('fixed-nav')) {
-                $('#page-wrapper').css("height", $(window).height() - 60 + "px");
-            }
-        }
-
-        function fix_auth_height() {
-            $('body').css("height", ($(window).height() + 100) + "px");
-            $('.auth-content').css("height", $('body').height() + "px");
-        }
     }
 ]);
 

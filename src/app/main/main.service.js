@@ -7,7 +7,6 @@ angular.module('supportAdminApp')
             var API_URL = $const.API_URL;
             var MainService = {};
             MainService.retrieveTrainDetail = function (trainOnlyId) {
-
                 var request = $http({
                     method: 'GET',
                     url: API_URL + '/' + trainOnlyId + '/' + 'traindetail',
@@ -41,7 +40,6 @@ angular.module('supportAdminApp')
                 });
                 return request.then(
                     function (response) {
-
                         if (response.data.code === 0) {
                             return response.data.data;
                         }
@@ -208,7 +206,6 @@ angular.module('supportAdminApp')
             function fix_number(x) {
                 return Number.parseFloat(x).toFixed(2);
             }
-
             return MainService;
         }
     ]);

@@ -131,12 +131,6 @@ module.controller("AnalysisSpotController", ['$scope', '$state', '$rootScope', '
         $scope.zwmotor = {};
 
         $scope.$on('ChartDataUpdated', function(event){
-            $timeout(function(){
-                $rootScope.$broadcast('ResizePage');
-            }, 800);
-        });
-
-        $scope.$on('ChartDataUpdated', function(event){
             var zhoucha = new Highcharts.Chart({
                 chart: {
                     renderTo: 'zhoucha',
@@ -339,6 +333,5 @@ module.controller("AnalysisSpotController", ['$scope', '$state', '$rootScope', '
 
         angular.element(document).ready(function () {
             $rootScope.$broadcast("HideDashboard");
-            $rootScope.$broadcast('ResizePage');
         });
     }]);

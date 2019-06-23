@@ -13,7 +13,6 @@ angular.module('supportAdminApp')
             isLoading: false,
             setLoading: function(loading) {
                 this.isLoading = loading;
-                
             }
         };
         $scope.formForRegister = {
