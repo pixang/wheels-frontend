@@ -297,10 +297,6 @@ module.controller('MainController', [
         };
 
         angular.element(document).ready(function () {
-            if ($location.url() === '/index/main') {
-                $rootScope.$broadcast("ShowDashboard");
-            }
-
             if ($cookies.get('currentUser')) {
                 $scope.getTrainInfo();
                 $scope.currentUser.username = $cookies.get('currentUser');
